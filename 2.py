@@ -10,17 +10,17 @@ print "Generating random numbers. Lab 1 and 2"
 print ""
 
 def mega_input_better(variable_name, default, minvar, maxvar):
-  print "Please enter {}: ".format(variable_name)
-  var = raw_input()
-  try:
-      var = float(var)
-  except ValueError:
-      print "Good attempt!  {} = {}".format(variable_name, default)
-      var = default
-  if (var < minvar) or (var > maxvar):
-    print "Good attempt!  {} = {}".format(variable_name, default)
-    var = default
-  return var  
+	print "Please enter {}: ".format(variable_name)
+	var = raw_input()
+	try:
+			var = float(var)
+	except ValueError:
+			print "Good attempt!  {} = {}".format(variable_name, default)
+			var = default
+	if (var < minvar) or (var > maxvar):
+		print "Good attempt!  {} = {}".format(variable_name, default)
+		var = default
+	return var  
 
 n = int(mega_input_better("n", 100000, 0, 1e7))
 a = mega_input_better("a", 17094, 0, 1e8)
@@ -138,10 +138,10 @@ while (1):
 	prev_1 = num_1
 	prev_2 = num_2
 
+	i += 1
+
 	if (num_1 == num_2):
 		break
-
-	i += 1
 
 print "Aper = {}".format(period + i)
 
@@ -151,132 +151,137 @@ print "Aper = {}".format(period + i)
 # plt.show()
 
 def factory(raspr_name):
-    if (raspr_name == 1): 
-      return ravnomern
-    if (raspr_name == 2): 
-      return gauss
-    if (raspr_name == 3): 
-      return expon
-    if (raspr_name == 4): 
-      return gamma
-    if (raspr_name == 5): 
-      return triangle
-    if (raspr_name == 6): 
-      return simpson
+		if (raspr_name == 1): 
+			return ravnomern
+		if (raspr_name == 2): 
+			return gauss
+		if (raspr_name == 3): 
+			return expon
+		if (raspr_name == 4): 
+			return gamma
+		if (raspr_name == 5): 
+			return triangle
+		if (raspr_name == 6): 
+			return simpson
 
 
 def ravnomern(numbers):
-    print "Ravnomern raspr"
-    a = mega_input_better("a", 1, 0, n-1)
-    b = mega_input_better("b", n, 0, n)
+		print "Ravnomern raspr"
+		a = mega_input_better("a", 1, 0, n-1)
+		b = mega_input_better("b", n, 0, n)
 
-    array = []
+		if (b < a):
+			temp = a
+			a = b
+			b = temp
 
-    for num in numbers:
-      array.append(a+(b-a)*num)
+		array = []
 
-    return array
+		for num in numbers:
+			array.append(a+(b-a)*num)
+
+		return array
 
 def gauss(numbers):
-  print "Gauss raspr"
-  mx = mega_input_better("mx", 0.5, 0, 1)
-  gx = mega_input_better("gx", 0.1, 0, 1)
+	print "Gauss raspr"
+	mx = mega_input_better("mx", 0.5, 0, 1)
+	gx = mega_input_better("gx", 0.1, 0, 1)
 
-  array = []
-  i = 0
-  for num in numbers:
-    array.append(mx+gx*math.sqrt(2)*(gauss_sum(i, numbers) - 6))
-    i += 1
+	array = []
+	i = 0
+	for num in numbers:
+		array.append(mx+gx*math.sqrt(2)*(gauss_sum(i, numbers) - 6))
+		i += 1
 
-  return array
+	return array
 
 def gauss_sum(i, numbers):
-  sum = 0
-  for j in np.arange(i, i+6):
-    if j < n:
-      sum += numbers[j]
-  return sum
+	sum = 0
+	for j in np.arange(i, i+6):
+		if j < n:
+			sum += numbers[j]
+	return sum
 
 def expon(numbers):
-  print "Expon raspr"
-  lambd = mega_input_better("lambda", 0.1, -1, 1)
+	print "Expon raspr"
+	lambd = mega_input_better("lambda", 0.1, -1, 1)
 
-  array = []
-  for num in numbers:
-    array.append((-1/lambd)*np.log(num))
+	array = []
+	for num in numbers:
+		array.append((-1/lambd)*np.log(num))
 
-  return array
+	return array
 
 def gamma(numbers):
-  print "Gamma raspr"
-  nu = mega_input_better("nu", 3, 2, 50)
-  lambd = mega_input_better("lambda", 0.1, 0, 1e6)
-  nu = int(nu)
+	print "Gamma raspr"
+	nu = mega_input_better("nu", 3, 2, 50)
+	lambd = mega_input_better("lambda", 0.1, 0, 1e6)
+	nu = int(nu)
 
-  array = []
-  i = 0
-  for num in numbers:
-    array.append((-1/lambd)*np.log(gamma_mul(i, numbers, nu)))
-    i += 1
+	array = []
+	i = 0
+	for num in numbers:
+		array.append((-1/lambd)*np.log(gamma_mul(i, numbers, nu)))
+		i += 1
 
-  return array
+	return array
 
 def gamma_mul(i, numbers, nu):
-  mul = 1
-  for j in np.arange(i, i+nu):
-    if j < n:
-      mul *= numbers[j]
-  return mul
+	mul = 1
+	for j in np.arange(i, i+nu):
+		if j < n:
+			mul *= numbers[j]
+	return mul
 
 def triangle(numbers):
-  print "Triangle raspr"
-  a = mega_input_better("a", 1, 0, n-1)
-  b = mega_input_better("b", n, 0, n)
+	print "Triangle raspr"
+	a = mega_input_better("a", 1, 0, n-1)
+	b = mega_input_better("b", n, 0, n)
 
-  array = []
-  for i in np.arange(0, len(numbers) - 1):
-    array.append(a+(b-a)*max(numbers[i], numbers[i+1]))
-    i += 2
+	array = []
+	for i in np.arange(0, len(numbers) - 1):
+		array.append(a+(b-a)*max(numbers[i], numbers[i+1]))
+		i += 2
 
-  return array
+	return array
 
 def simpson(numbers):
-  print "Simpson raspr"
-  a = mega_input_better("a", 1, 0, n-1)
-  b = mega_input_better("b", n, 0, n)
+	print "Simpson raspr"
+	a = mega_input_better("a", 1, 0, n-1)
+	b = mega_input_better("b", n, 0, n)
 
-  array_ravn = []
+	array_ravn = []
 
-  for num in numbers:
-    array_ravn.append(a/2+(b/2-a/2)*num)
+	for num in numbers:
+		array_ravn.append(a/2+(b/2-a/2)*num)
 
-  array = []
+	array = []
 
-  for i in np.arange(0, len(array_ravn) - 1):
-    array.append(array_ravn[i] + array_ravn[i+1])
-    i += 2
+	for i in np.arange(0, len(array_ravn) - 1):
+		array.append(array_ravn[i] + array_ravn[i+1])
+		i += 2
 
-  return array
+	return array
 
 def norm_array_better(mas):
-  array = []
-  m1 = max(mas)
-  if (m1 < 0):
-    m1 = min(mas)
-  for i in mas:
-    array.append(i/float(m1))
-  return array
+	array = []
+	m1 = max(mas)
+	if (m1 < 0):
+		m1 = min(mas)
+	for i in mas:
+		array.append(i/float(m1))
+	return array
 
 def mx(array):
-  return sum(array)/n
+	return sum(array)/n
 def dx(array, mx):
-  dx = 0
-  for i in array:
-    dx += (i - mx)**2
-  dx = dx/(n-1)
-  return dx
+	dx = 0
+	for i in array:
+		dx += (i - mx)**2
+	dx = dx/(n-1)
+	return dx
 def gx(dx):
-  return math.sqrt(dx)
+	return math.sqrt(dx)
 
 print ""
 print "Choose distribution:"
@@ -290,13 +295,13 @@ print "simpson - 6"
 dist = raw_input()
 default = 6
 try:
-    dist = int(dist)
+		dist = int(dist)
 except ValueError:
-    print "Good attempt!  distribution = {}".format(default)
-    dist = default
+		print "Good attempt!  distribution = {}".format(default)
+		dist = default
 if (dist < 1) or (dist > 6):
-  print "Good attempt!  distribution = {}".format(default)
-  dist = default
+	print "Good attempt!  distribution = {}".format(default)
+	dist = default
 
 a = factory(dist)
 raspr_array = a(numbers_before_norm)
@@ -310,7 +315,7 @@ print ""
 print "Parameters:"
 print "mx = {}".format(mx)
 print "dx = {}".format(dx)
-print "mx = {}".format(gx)
+print "gx = {}".format(gx)
 
 plt.hist(raspr_array, hist_size, facecolor='green', alpha=0.5)
 plt.show()
