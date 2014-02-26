@@ -2,8 +2,13 @@ require 'colored'
 
 class Generator
   def initialize
-    @pi1 = 0.6
-    @pi2 = 0.5
+    @pi1 = ARGV[0].to_f
+    @pi2 = ARGV[1].to_f
+    @cycles = ARGV[2].to_f
+
+    @pi1 = 0.6 if @pi1 <= 0 or @pi1 > 1.0
+    @pi2 = 0.5 if @pi2 <= 0 or @pi2 > 1.0
+    @cycles = 10000 if @cycles < 1 or @pi2 > 1e7
 
     @cycles_berore_request = 2
     @queue = 0
@@ -115,22 +120,21 @@ class Generator
 
   end
 
-  def run cycles
-    cycles.to_i.times do 
+  def run
+    @cycles.to_i.times do 
       generate_new_state
     end
 
     puts "System performance metrics".green
-    puts "Average queue length per cycle: ".red + "#{@queue_processed/cycles.to_f}".cyan
-    puts "Average requests processed per cycle: ".red + "#{@services_count/cycles.to_f}".cyan
+    puts "Average queue length per cycle: ".red + "#{@queue_processed/@cycles.to_f}".cyan
+    puts "Average requests processed per cycle: ".red + "#{@services_count/@cycles.to_f}".cyan
     puts "States probabilities".green
     @states.each do |state, count|
-      puts "P#{state}".red + "=" + " #{count/cycles.to_f}".cyan
+      puts "P#{state}".red + "=" + " #{count/@cycles.to_f}".cyan
     end
   end
 
 end
 
 generator = Generator.new
-cycles = 10000
-generator.run cycles
+generator.run
